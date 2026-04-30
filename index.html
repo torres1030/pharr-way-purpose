@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharr Way Purpose Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Indie+Flower&family=Patrick+Hand&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* ── BODY / SCENE ── */
+body{
+  min-height:100vh;
+  background:#1a1a2e;
+  overflow-x:hidden;
+  font-family:'Barlow',sans-serif;
+}
+
+/* ── TITLE BANNER ── */
+.title-banner{
+  text-align:center;
+  padding:28px 20px 18px;
+  position:relative;
+  z-index:5;
+}
+.title-top{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(14px,2.5vw,20px);
+  color:#F3C300;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+  opacity:.8;
+}
+.title-main{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(36px,6vw,72px);
+  color:#F3C300;
+  text-shadow:0 0 40px rgba(243,195,0,.35),3px 3px 0 rgba(13,29,65,.8);
+  line-height:1;
+  letter-spacing:.02em;
+}
+.title-main span{color:#fff;}
+.title-sub{
+  font-family:'Caveat',cursive;
+  font-size:clamp(16px,2.5vw,22px);
+  color:rgba(255,255,255,.5);
+  margin-top:8px;
+  letter-spacing:.06em;
+}
+
+/* ── CORK BOARD ── */
+.board-frame{
+  margin:0 auto 40px;
+  max-width:1300px;
+  width:calc(100% - 32px);
+  background:linear-gradient(135deg,#8B5E2A 0%,#6B4423 20%,#8B5E2A 40%,#7A5230 60%,#8B5E2A 80%,#6B4423 100%);
+  border-radius:6px;
+  padding:18px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.6),
+    inset 0 2px 4px rgba(255,255,255,.15),
+    inset 0 -2px 4px rgba(0,0,0,.3);
+  position:relative;
+}
+/* wood grain texture */
+.board-frame::before{
+  content:'';position:absolute;inset:0;border-radius:6px;pointer-events:none;
+  background:repeating-linear-gradient(
+    88deg,
+    transparent 0,transparent 8px,
+    rgba(0,0,0,.04) 8px,rgba(0,0,0,.04) 9px
+  );
+}
+/* inner frame highlight */
+.board-frame::after{
+  content:'';position:absolute;inset:10px;border-radius:3px;pointer-events:none;
+  border:2px solid rgba(255,255,255,.08);
+}
+
+.cork{
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(180,130,80,.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(140,90,40,.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(160,110,60,.15) 0%, transparent 80%),
+    #C4873A;
+  border-radius:3px;
+  min-height:700px;
+  position:relative;
+  padding:30px 24px 40px;
+  overflow:hidden;
+  /* cork texture */
+  background-image:
+    radial-gradient(ellipse 3px 2px at 15% 22%, rgba(0,0,0,.12) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 3px at 35% 8%, rgba(0,0,0,.09) 0%, transparent 100%),
+    radial-gradient(ellipse 4px 2px at 55% 35%, rgba(0,0,0,.08) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 4px at 72% 15%, rgba(0,0,0,.1) 0%, transparent 100%),
+    radial-gradient(ellipse 3px 2px at 88% 42%, rgba(0,0,0,.11) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 3px at 8% 58%, rgba(0,0,0,.09) 0%, transparent 100%),
+    radial-gradient(ellipse 4px 3px at 28% 68%, rgba(0,0,0,.08) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 2px at 48% 75%, rgba(0,0,0,.1) 0%, transparent 100%),
+    radial-gradient(ellipse 3px 4px at 65% 62%, rgba(0,0,0,.09) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 2px at 82% 80%, rgba(0,0,0,.08) 0%, transparent 100%),
+    radial-gradient(ellipse 3px 2px at 42% 92%, rgba(0,0,0,.1) 0%, transparent 100%),
+    radial-gradient(ellipse 2px 3px at 92% 88%, rgba(0,0,0,.09) 0%, transparent 100%),
+    linear-gradient(160deg, #D4944A 0%, #B87830 30%, #C88A40 60%, #A86820 100%);
+}
+
+/* section labels */
+.section-label{
+  font-family:'Permanent Marker',cursive;
+  font-size:16px;
+  color:rgba(80,40,10,.6);
+  margin-bottom:18px;
+  padding-bottom:4px;
+  border-bottom:2px dashed rgba(80,40,10,.2);
+}
+
+/* ── STICKY NOTE ── */
+.sticky{
+  position:absolute;
+  width:clamp(130px,14vw,165px);
+  aspect-ratio:1/1;
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  transition:box-shadow .15s, transform .1s;
+  border-radius:2px;
+  z-index:10;
+}
+.sticky:hover{
+  z-index:50;
+  box-shadow:6px 8px 20px rgba(0,0,0,.35),0 2px 4px rgba(0,0,0,.2);
+}
+.sticky:active{cursor:grabbing;z-index:100;}
+.sticky.dragging{
+  box-shadow:12px 16px 40px rgba(0,0,0,.5);
+  transform-origin:center;
+}
+.sticky-inner{
+  width:100%;height:100%;
+  padding:18px 14px 10px;
+  position:relative;
+  overflow:hidden;
+  border-radius:2px;
+}
+/* top fold line */
+.sticky-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:6px;
+  background:rgba(0,0,0,.05);
+}
+/* lined paper effect */
+.sticky-inner::after{
+  content:'';position:absolute;inset:24px 0 0;
+  background:repeating-linear-gradient(
+    transparent 0, transparent 22px,
+    rgba(0,0,0,.06) 22px, rgba(0,0,0,.06) 23px
+  );
+  pointer-events:none;
+}
+.sticky-text{
+  font-size:clamp(12px,1.3vw,15px);
+  line-height:1.55;
+  color:#2a1a00;
+  position:relative;z-index:2;
+  word-break:break-word;
+}
+
+/* pin */
+.pin{
+  position:absolute;
+  top:-10px;left:50%;transform:translateX(-50%);
+  width:16px;height:16px;border-radius:50%;
+  box-shadow:0 2px 6px rgba(0,0,0,.5),inset 0 -2px 3px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.4);
+  z-index:20;
+  cursor:grab;
+}
+.pin::after{
+  content:'';position:absolute;top:50%;left:50%;
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.35);
+  transform:translate(-55%,-55%);
+}
+
+/* ── WOW CARD ── */
+.wow-card{
+  position:absolute;
+  width:clamp(150px,17vw,200px);
+  height:clamp(220px,26vw,300px);
+  cursor:pointer;
+  z-index:15;
+  transition:box-shadow .15s, transform .15s;
+  border-radius:3px;
+}
+.wow-card:hover{
+  z-index:55;
+  transform:scale(1.04) rotate(0deg) !important;
+  box-shadow:8px 12px 32px rgba(0,0,0,.45);
+}
+.wow-inner{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#fdfaf2 0%,#f5f0e0 100%);
+  border-radius:3px;
+  padding:14px 12px 12px;
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;gap:6px;
+}
+.wow-inner::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0,transparent 19px,
+    rgba(100,120,200,.1) 19px,rgba(100,120,200,.1) 20px
+  );
+}
+.wow-badge{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(22px,2.8vw,32px);
+  color:#0D1D41;
+  line-height:1;
+  text-shadow:2px 2px 0 rgba(243,195,0,.5);
+  position:relative;z-index:2;
+}
+.wow-scribbles{
+  flex:1;position:relative;z-index:2;display:flex;flex-direction:column;gap:4px;
+}
+.wow-line{
+  height:clamp(8px,1vw,11px);
+  border-radius:2px;
+  background:rgba(13,29,65,.15);
+  position:relative;
+  overflow:hidden;
+}
+.wow-line::after{
+  content:'';position:absolute;top:0;bottom:0;left:0;
+  width:var(--fill,80%);
+  background:rgba(13,29,65,.25);
+  border-radius:2px;
+}
+.wow-click-hint{
+  font-family:'Caveat',cursive;
+  font-size:clamp(11px,1.1vw,13px);
+  color:rgba(13,29,65,.45);
+  text-align:center;
+  position:relative;z-index:2;
+  animation:hintPulse 2.5s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;}50%{opacity:.8;}}
+.wow-author{
+  font-family:'Caveat',cursive;
+  font-size:clamp(12px,1.2vw,14px);
+  color:rgba(13,29,65,.5);
+  text-align:right;
+  position:relative;z-index:2;
+  border-top:1px solid rgba(13,29,65,.12);
+  padding-top:4px;
+}
+
+/* ── WOW EXPANDED OVERLAY ── */
+.wow-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(13,29,65,.88);
+  backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  animation:overlayIn .25s ease-out;
+}
+.wow-overlay.show{display:flex;}
+@keyframes overlayIn{from{opacity:0;}to{opacity:1;}}
+
+.wow-modal{
+  background:linear-gradient(160deg,#fdfaf2 0%,#f0ead8 100%);
+  max-width:680px;width:100%;max-height:90vh;overflow-y:auto;
+  border-radius:4px;
+  padding:32px 36px;
+  position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.wow-modal::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0,transparent 27px,
+    rgba(100,120,200,.1) 27px,rgba(100,120,200,.1) 28px
+  );
+  border-radius:4px;
+}
+/* left red margin line */
+.wow-modal::after{
+  content:'';position:absolute;top:0;bottom:0;left:56px;width:2px;
+  background:rgba(220,60,60,.25);pointer-events:none;
+}
+.modal-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:20px;position:relative;z-index:2;
+}
+.modal-wow-title{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(28px,4vw,48px);
+  color:#0D1D41;
+  text-shadow:3px 3px 0 rgba(243,195,0,.4);
+  line-height:1;
+}
+.modal-subtitle{
+  font-family:'Caveat',cursive;
+  font-size:clamp(14px,1.8vw,18px);
+  color:rgba(13,29,65,.6);
+  margin-top:4px;
+}
+.back-btn{
+  background:#0D1D41;color:#F3C300;
+  border:3px solid #F3C300;
+  font-family:'Permanent Marker',cursive;
+  font-size:14px;padding:8px 16px;
+  cursor:pointer;border-radius:2px;
+  transition:all .12s;white-space:nowrap;flex-shrink:0;margin-left:16px;
+}
+.back-btn:hover{background:#F3C300;color:#0D1D41;}
+.back-btn:active{transform:translate(2px,2px);}
+.modal-author-tag{
+  font-family:'Caveat',cursive;
+  font-size:clamp(15px,1.8vw,19px);
+  color:rgba(13,29,65,.55);
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:2px dashed rgba(13,29,65,.15);
+  position:relative;z-index:2;
+}
+.wow-q{
+  margin-bottom:18px;position:relative;z-index:2;
+}
+.wow-q-label{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(13px,1.5vw,16px);
+  color:#0D1D41;
+  margin-bottom:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.wow-q-label::before{
+  content:attr(data-n);
+  background:#0D1D41;color:#F3C300;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+}
+.wow-q-answer{
+  font-family:'Caveat',cursive;
+  font-size:clamp(15px,1.8vw,19px);
+  color:#1a1000;
+  line-height:1.65;
+  padding-left:30px;
+}
+.modal-divider{
+  height:1px;background:rgba(13,29,65,.1);margin:12px 0;
+}
+/* print btn */
+.print-btn{
+  background:transparent;border:3px solid #0D1D41;color:#0D1D41;
+  font-family:'Permanent Marker',cursive;
+  font-size:13px;padding:7px 14px;cursor:pointer;border-radius:2px;
+  transition:all .12s;margin-top:20px;position:relative;z-index:2;
+  display:block;
+}
+.print-btn:hover{background:#0D1D41;color:#F3C300;}
+
+/* ── SECTION DIVIDER ── */
+.board-section{margin-bottom:32px;}
+.section-title{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(14px,1.8vw,18px);
+  color:rgba(80,40,8,.65);
+  border-bottom:2px dashed rgba(80,40,8,.2);
+  padding-bottom:6px;
+  margin-bottom:0;
+  display:inline-block;
+}
+
+/* ── STATIC LAYOUT AREAS ── */
+.sticky-area{
+  position:relative;
+  width:100%;
+  min-height:380px;
+  margin-bottom:20px;
+}
+.wow-area{
+  position:relative;
+  width:100%;
+  min-height:360px;
+}
+
+/* ── PRINT STYLES ── */
+/* index card CTA */
+.index-card-wrap{
+  max-width:1300px;width:calc(100% - 32px);margin:0 auto 32px;
+  display:flex;justify-content:center;padding:0 18px;
+}
+.index-card{
+  background:linear-gradient(160deg,#fffef5 0%,#f5f0dc 100%);
+  border:2px solid rgba(13,29,65,.12);
+  border-radius:3px;
+  padding:18px 28px 18px 22px;
+  display:flex;align-items:center;gap:20px;
+  box-shadow:3px 4px 14px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.8);
+  cursor:pointer;
+  transition:transform .12s,box-shadow .12s;
+  max-width:680px;width:100%;
+  position:relative;
+  overflow:hidden;
+}
+.index-card::before{
+  /* red margin line */
+  content:'';position:absolute;top:0;bottom:0;left:42px;width:2px;
+  background:rgba(220,60,60,.3);pointer-events:none;
+}
+.index-card::after{
+  /* ruled lines */
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0,transparent 23px,
+    rgba(100,120,200,.12) 23px,rgba(100,120,200,.12) 24px
+  );
+}
+.index-card:hover{transform:translateY(-2px) rotate(.3deg);box-shadow:5px 8px 22px rgba(0,0,0,.3);}
+.index-card:active{transform:translateY(0) rotate(0);}
+.ic-star{font-size:32px;flex-shrink:0;position:relative;z-index:2;}
+.ic-text{position:relative;z-index:2;flex:1;}
+.ic-headline{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(15px,2vw,20px);
+  color:#0D1D41;
+  line-height:1.2;
+  margin-bottom:4px;
+}
+.ic-sub{
+  font-family:'Caveat',cursive;
+  font-size:clamp(13px,1.5vw,16px);
+  color:rgba(13,29,65,.5);
+}
+.ic-arrow{
+  font-family:'Permanent Marker',cursive;
+  font-size:24px;color:#F3C300;flex-shrink:0;
+  position:relative;z-index:2;
+}
+
+/* PRINT TEMPLATE PAGE */
+#print-template{
+  display:none;
+  position:fixed;inset:0;z-index:2000;
+  background:#fff;overflow-y:auto;
+  padding:24px 48px 20px;
+  font-family:'Barlow',sans-serif;
+}
+#print-template.show{display:block;}
+.pt-close{
+  position:fixed;top:20px;right:24px;
+  background:#0D1D41;color:#F3C300;border:2px solid #F3C300;
+  font-family:'Permanent Marker',cursive;font-size:13px;
+  padding:7px 16px;cursor:pointer;border-radius:2px;
+  transition:all .12s;z-index:10;
+}
+.pt-close:hover{background:#F3C300;color:#0D1D41;}
+.pt-header{text-align:center;margin-bottom:14px;border-bottom:3px solid #0D1D41;padding-bottom:10px;}
+.pt-logo{font-family:'Permanent Marker',cursive;font-size:28px;color:#F3C300;
+  text-shadow:2px 2px 0 #0D1D41;line-height:1;}
+.pt-title{font-family:'Permanent Marker',cursive;font-size:19px;color:#0D1D41;margin-top:3px;}
+.pt-tagline{font-family:'Caveat',cursive;font-size:14px;color:rgba(13,29,65,.55);margin-top:2px;}
+.pt-name-row{display:flex;gap:16px;margin-bottom:12px;}
+.pt-field{flex:1;display:flex;flex-direction:column;gap:6px;}
+.pt-field-label{font-family:'Permanent Marker',cursive;font-size:12px;color:#0D1D41;}
+.pt-field-line{border-bottom:2px solid #0D1D41;height:24px;}
+.pt-question{margin-bottom:10px;}
+.pt-q-label{
+  font-family:'Permanent Marker',cursive;font-size:13px;color:#0D1D41;
+  margin-bottom:2px;display:flex;align-items:center;gap:6px;
+}
+.pt-q-num{
+  background:#0D1D41;color:#F3C300;
+  width:20px;height:20px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:10px;flex-shrink:0;
+}
+.pt-q-sub{font-family:'Caveat',cursive;font-size:12px;color:rgba(13,29,65,.5);margin-left:28px;margin-bottom:3px;}
+.pt-write-lines{display:flex;flex-direction:column;gap:0;}
+.pt-write-line{border-bottom:1px solid rgba(13,29,65,.18);height:22px;}
+.pt-footer{
+  margin-top:12px;padding:12px 20px;
+  background:#0D1D41;border-radius:3px;
+  text-align:center;
+}
+.pt-footer-text{
+  font-family:'Caveat',cursive;font-size:16px;color:#fff;
+  line-height:1.5;
+}
+.pt-footer-text span{color:#F3C300;font-family:'Permanent Marker',cursive;font-size:17px;}
+.pt-submit-row{margin-top:8px;text-align:center;}
+.pt-submit-label{font-family:'Permanent Marker',cursive;font-size:14px;color:#0D1D41;margin-bottom:6px;}
+.pt-submit-line{border-bottom:2px solid #0D1D41;height:32px;max-width:400px;margin:0 auto;}
+.pt-print-btn{
+  background:#0D1D41;color:#F3C300;border:none;
+  font-family:'Permanent Marker',cursive;font-size:15px;
+  padding:10px 28px;cursor:pointer;border-radius:2px;
+  margin-top:24px;display:inline-block;
+}
+.pt-print-btn:hover{background:#F3C300;color:#0D1D41;}
+
+@media print{
+  @page{margin:12mm 14mm;size:letter portrait;}
+  body{background:#fff;}
+  .title-banner,.board-frame,.index-card-wrap{display:none!important;}
+  .wow-overlay{display:none!important;}
+  #print-template{display:block!important;position:static;padding:0;overflow:visible;}
+  .pt-close,.pt-print-btn{display:none!important;}
+  .pt-question{page-break-inside:avoid;}
+}
+
+/* font variety classes */
+.font-caveat{font-family:'Caveat',cursive;}
+.font-indie{font-family:'Indie Flower',cursive;}
+.font-patrick{font-family:'Patrick Hand',cursive;}
+.font-kalam{font-family:'Kalam',cursive;}
+.font-marker{font-family:'Permanent Marker',cursive;}
+</style>
+</head>
+<body>
+
+<!-- TITLE -->
+<div class="title-banner">
+  <div class="title-top">City of Pharr · Office of Strategic Excellence</div>
+  <div class="title-main">✨ <span>Our</span> Pharr Way <span>Purpose</span> ✨</div>
+  <div class="title-sub">Why we serve · What drives us · Who we do it for</div>
+</div>
+
+<!-- BOARD -->
+<div class="board-frame">
+  <div class="cork" id="cork-board">
+
+    <!-- PURPOSE STICKY NOTES -->
+    <div style="font-family:'Permanent Marker',cursive;font-size:16px;color:rgba(80,40,8,.55);margin-bottom:16px;border-bottom:2px dashed rgba(80,40,8,.18);padding-bottom:6px;display:inline-block;">
+      📌 Our Purposes — drag them around!
+    </div>
+    <div class="sticky-area" id="sticky-area">
+      <!-- stickies injected by JS -->
+    </div>
+
+    <!-- WOW STORIES DIVIDER -->
+    <div style="font-family:'Permanent Marker',cursive;font-size:16px;color:rgba(80,40,8,.55);margin-bottom:16px;border-bottom:2px dashed rgba(80,40,8,.18);padding-bottom:6px;display:inline-block;margin-top:8px;">
+      🌟 WOW Stories — click to read!
+    </div>
+    <div class="wow-area" id="wow-area">
+      <!-- wow cards injected by JS -->
+    </div>
+
+    <!-- INDEX CARD inside board, below WOW stories -->
+    <div style="margin-top:32px;display:flex;justify-content:flex-start;">
+      <div class="index-card" onclick="openPrintTemplate()" style="max-width:500px;">
+        <div class="ic-star">&#127775;</div>
+        <div class="ic-text">
+          <div class="ic-headline">Print Your Own WOW Story</div>
+          <div class="ic-sub">Make your impact &#8212; fill it in &amp; share it with us</div>
+        </div>
+        <div class="ic-arrow">&#8594;</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WOW EXPANDED OVERLAY -->
+<div class="wow-overlay" id="wow-overlay">
+  <div class="wow-modal" id="wow-modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-wow-title">WOW Story</div>
+        <div class="modal-subtitle">City of Pharr · Excellence Every Day</div>
+      </div>
+      <button class="back-btn" onclick="closeWow()">← Back to Board</button>
+    </div>
+    <div class="modal-author-tag" id="modal-author">— Department · Name</div>
+    <div id="modal-body"></div>
+
+  </div>
+</div>
+
+
+
+<!-- PRINT TEMPLATE PAGE -->
+<div id="print-template">
+  <button class="pt-close" onclick="closePrintTemplate()">← Back to Board</button>
+
+  <div class="pt-header">
+    <div class="pt-logo">WOW!</div>
+    <div class="pt-title">My WOW Story</div>
+    <div class="pt-tagline">City of Pharr · Excellence Every Day</div>
+  </div>
+
+  <div class="pt-name-row">
+    <div class="pt-field">
+      <div class="pt-field-label">My Name</div>
+      <div class="pt-field-line"></div>
+    </div>
+    <div class="pt-field">
+      <div class="pt-field-label">My Department</div>
+      <div class="pt-field-line"></div>
+    </div>
+    <div class="pt-field" style="flex:.6">
+      <div class="pt-field-label">Date</div>
+      <div class="pt-field-line"></div>
+    </div>
+  </div>
+
+  <div class="pt-question">
+    <div class="pt-q-label"><span class="pt-q-num">1</span> What happened?</div>
+    <div class="pt-q-sub">Be specific: who, what, when, where</div>
+    <div class="pt-write-lines">
+      <div class="pt-write-line"></div><div class="pt-write-line"></div>
+      <div class="pt-write-line"></div>
+    </div>
+  </div>
+
+  <div class="pt-question">
+    <div class="pt-q-label"><span class="pt-q-num">2</span> What did you do?</div>
+    <div class="pt-q-sub">Your specific action — not your team's, yours</div>
+    <div class="pt-write-lines">
+      <div class="pt-write-line"></div><div class="pt-write-line"></div>
+      <div class="pt-write-line"></div>
+    </div>
+  </div>
+
+  <div class="pt-question">
+    <div class="pt-q-label"><span class="pt-q-num">3</span> What was the impact?</div>
+    <div class="pt-q-sub">How did this contribute to your department's or the City's excellence?</div>
+    <div class="pt-write-lines">
+      <div class="pt-write-line"></div><div class="pt-write-line"></div>
+      <div class="pt-write-line"></div>
+    </div>
+  </div>
+
+  <div class="pt-question">
+    <div class="pt-q-label"><span class="pt-q-num">4</span> What does this say about your mission?</div>
+    <div class="pt-q-sub">In your own words — not the official mission statement. What does it mean to YOU?</div>
+    <div class="pt-write-lines">
+      <div class="pt-write-line"></div><div class="pt-write-line"></div>
+      <div class="pt-write-line"></div>
+    </div>
+  </div>
+
+  <div class="pt-footer">
+    <div class="pt-footer-text">
+      Your story is proof that <span>The Pharr Way</span> is working.<br>
+      It is about <span>People, Processes, and Performance.</span><br>
+      <span>You own the Pharr Way. You deliver Excellence Every Day.</span><br>
+      Share it with us.
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px;">
+    <div class="pt-submit-label">Submit your WOW Story to:</div>
+    <div class="pt-submit-line">excellence@pharr-tx.gov</div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px;">
+    <button class="pt-print-btn" onclick="window.print()">🖨️ Print This Form</button>
+  </div>
+</div>
+
+<script>
+// ── CONTENT — EDIT THIS SECTION ────────────────────────────────────────────
+// Replace placeholder text with real content from your activity.
+// Fonts: 'caveat', 'indie', 'patrick', 'kalam', 'marker'
+// Colors: '#81d2e8' (blue), '#9bc13c' (green), '#f9be29' (yellow)
+// Pins: '#CC2200' (red), '#1A44C8' (blue), '#F5C518' (gold), '#222' (black)
+
+var STICKIES = [
+  { text: "Foster professional growth by teaching", font:'caveat',   color:'#f9be29', pin:'#CC2200',  rot:-3  },
+  { text: "Impacting families",                 font:'indie',    color:'#81d2e8', pin:'#1A44C8',  rot:2   },
+  { text: "To improve the services of water and sewer for City of Pharr citizens",                        font:'kalam',    color:'#9bc13c', pin:'#F5C518',  rot:-1  },
+  { text: "To be helpful and find solutions for my peers",                  font:'patrick',  color:'#f9be29', pin:'#222',     rot:3   },
+  { text: "To be a medium through which people can tell their story.",                                   font:'caveat',   color:'#81d2e8', pin:'#CC2200',  rot:-2  },
+  { text: "To be a part of something big and leave a legacy",              font:'indie',    color:'#9bc13c', pin:'#1A44C8',  rot:1   },
+  { text: "Have a purpose to support family and city",                           font:'kalam',    color:'#f9be29', pin:'#F5C518',  rot:-4  },
+  { text: "Because of the teamwork and leadership. I work here to serve our community and make it better. I\'m here to make a difference.",                font:'patrick',  color:'#81d2e8', pin:'#CC2200',  rot:2.5 },
+  { text: "To provide for the city as much as possible and to improve customer service skills.",                   font:'caveat',   color:'#9bc13c', pin:'#222',     rot:-1.5},
+  { text: "Personal and professional development (under excellent mentors)",           font:'indie',    color:'#f9be29', pin:'#1A44C8',  rot:3.5 },
+  { text: "To make an impact.",          font:'kalam',    color:'#81d2e8', pin:'#F5C518',  rot:-3  },
+  { text: "To be a part of the growing positive impact Pharr is having on its community. Love my team and the impact we are making.",                    font:'marker',   color:'#9bc13c', pin:'#CC2200',  rot:1.5 },
+  { text: "The benefits and the outreach the city does for the community",  font:'indie', color:'#f9be29', pin:'#222', rot: -3},
+  { text: "To share knowledge and help opthers grow within our field.", font:'patrick', color:'#81d2e8', pin:'#1A44C8', rot:-1.5}
+];
+
+var WOW_STORIES = [
+  {
+    dept: 'Pharr Connect',
+    name: 'April Ramirez',
+    happened:  'A student in the Digital Literacy Course was struggling physically to participate. We assisted him and found out he was a stroke survivor. He has been relearning simple skills, and was struggling with learning the material.',
+    did:       'I made the decision to facilitate his learning. I asked if he would like me to read the questions for him. I made adjustments to the team to accomodate a on-on-one with him in class for specific tasks.',
+    impact:    'He successfully passed all his certifications and was able to complete his exams.He received his free laptop to continue his education. He was so grateful for our patience and that we didn\'t give up on him.',
+    mission:   'Our mission is to create programs that are inclusive and that are positive experiences for our residents. Challenges help us grow and help us improve our programs and the service we provide. The impact we have on people is bigger than us.'
+  },
+  {
+    dept: 'Public Health',
+    name: 'Damaris Pizano',
+    happened:  'I\'ve met residents who are unaware of many resources available to support their health and basic needs. Now I have the opportunity to connect people to those services.',
+    did:       'I engaged with residents one-to-one and shared informations about our programs to help grow our community resource directory while also building external partnerships.',
+    impact:    'This helped increase awareness of community resources, strengthened partners, and supported the department\'s mission.',
+    mission:   'To me, it is about serving others, connecting people to support, and making a positive impact on their lives.'
+  },
+  {
+    dept: 'Office of City Communications',
+    name: 'Alejandro Martinez',
+    happened:  'I have a video series titled Clocked In. Last year, I interviewed Digital Navigators in an attempt to showcase who they are and what they do for Pharr Connect.',
+    did:       'I made videos for social media and assured that my subjects felt safe when interviewing them and displaying their character in the most positive ways.',
+    impact:    'Viewers put a face and name to the people who service their connectivity every day, and I was able to get a new perspective on my peers in a different department and now have a better relationship.',
+    mission:   'For me, it makes me feel appreciated, it helps me see the world through a different lens, and I feel accomplished showing up to work every day.'
+  },
+  {
+    dept: 'Public Utilities',
+    name: 'Erica Valdez',
+    happened:  'I received a call from a resident who had a sewer overflow in her property. She was very upset due to the sewer damaging her property.',
+    did:       'I informed her that I would contact a unit and have them go to her location to help and assist with what was happening.',
+    impact:    'Due to our fast response, the customer called back to speak with me and the director and thanked us for helping quickly. Ever since then, we as a department look into new ways to make the department better.',
+    mission:   'For me it is always important to be positive and always give our 100%. To find a way to help and transfer my smile to the residents and make everyone happy.'
+  },
+   {
+    dept: 'Public Works',
+    name: 'Karina Martinez',
+    happened:  'I received a phone call from a resident reporting that his house would get flooded when it rained. Due to the location of the property, he said that they kept sending him to different organizations, either County or Pharr.',
+    did:       'I heard the concern of the resident and raised it to supervisors and directors. One director was really helpful. She explained me through the process, the options that could work on that location. I then shared all of this to my own director.',
+    impact:    'My director made contact with the resident and was able to provide him with the information that was given to us in order to better assist the concerned resident.',
+    mission:   'Working at the City of Pharr means providing excellent service. Being able to assist residents, coworkers, and vendors.'
+  },
+   {
+    dept: 'Library',
+    name: ' ',
+    happened:  'A family who frequented the library children\'s area often, a mom who was blind and her daughter, would always ask abour braille books and if we were planning on adding any to our catalog.',
+    did:       'The concern was brought up to our children\'s supervisor and she and one our book vendors made it their mission to find and purchase books in braille.',
+    impact:    'The mother was finally able to read to her child and the child was able to start learning braille.',
+    mission:   'We strive for the best possible service for our patrons. We strive for service that creates long lasting beneficial impact.'
+  }
+];
+// ────────────────────────────────────────────────────────────────────────────
+
+var fontMap={caveat:'Caveat',indie:'Indie Flower',patrick:'Patrick Hand',kalam:'Kalam',marker:'Permanent Marker'};
+var currentWow=null;
+
+// ── BUILD STICKIES ────────────────────────────────────────────────────────────
+function buildStickies(){
+  var area=document.getElementById('sticky-area');
+  var aW=area.offsetWidth||900;
+  var aH=area.offsetHeight||380;
+  var perRow=Math.floor(aW/(clamp(130,aW*.12,165)+16));
+  if(perRow<1)perRow=1;
+
+  STICKIES.forEach(function(s,i){
+    var note=document.createElement('div');
+    note.className='sticky';
+    var sizeW=clamp(130,aW*.13,165);
+    var rot=s.rot||(Math.random()*8-4);
+    // grid position with jitter
+    var col=i%perRow;
+    var row=Math.floor(i/perRow);
+    var jx=(Math.random()-.5)*20;
+    var jy=(Math.random()-.5)*18;
+    var x=col*(sizeW+18)+jx+12;
+    var y=row*(sizeW+32)+jy+20;
+    note.style.cssText='left:'+x+'px;top:'+y+'px;width:'+sizeW+'px;height:'+sizeW+'px;transform:rotate('+rot+'deg);box-shadow:4px 6px 16px rgba(0,0,0,.28),0 1px 3px rgba(0,0,0,.18);';
+
+    var pin=document.createElement('div');
+    pin.className='pin';
+    pin.style.background=s.pin;
+
+    var inner=document.createElement('div');
+    inner.className='sticky-inner';
+    inner.style.background='linear-gradient(160deg,'+s.color+' 0%,'+adjustColor(s.color,-15)+' 100%)';
+
+    var txt=document.createElement('div');
+    txt.className='sticky-text';
+    txt.style.fontFamily="'"+fontMap[s.font]+"',cursive";
+    txt.style.fontSize=clamp(11,sizeW*.082,15)+'px';
+    txt.textContent=s.text;
+
+    inner.appendChild(txt);
+    note.appendChild(pin);
+    note.appendChild(inner);
+    area.appendChild(note);
+    makeDraggable(note);
+  });
+
+  // adjust area height
+  var maxY=0;
+  area.querySelectorAll('.sticky').forEach(function(n){
+    var b=n.style.top?parseInt(n.style.top):0;
+    var h=n.offsetHeight||165;
+    maxY=Math.max(maxY,b+h+40);
+  });
+  if(maxY>40)area.style.minHeight=maxY+'px';
+}
+
+// ── BUILD WOW CARDS ───────────────────────────────────────────────────────────
+function buildWows(){
+  var area=document.getElementById('wow-area');
+  var aW=area.offsetWidth||900;
+  var cardW=clamp(150,aW*.15,200);
+  var cardH=Math.round(cardW*1.5);
+  var gapX=clamp(180,aW*.17,230);
+
+  WOW_STORIES.forEach(function(w,i){
+    var card=document.createElement('div');
+    card.className='wow-card';
+    var rot=(Math.random()*6-3).toFixed(1);
+    var jy=(Math.random()-.5)*24;
+    var x=i*gapX+Math.random()*20;
+    var y=jy+20;
+    card.style.cssText='left:'+x+'px;top:'+y+'px;width:'+cardW+'px;height:'+cardH+'px;transform:rotate('+rot+'deg);box-shadow:4px 8px 20px rgba(0,0,0,.32);';
+    card.dataset.idx=i;
+    card.onclick=function(){openWow(parseInt(this.dataset.idx));};
+    card.title='Click to read '+w.dept+' WOW Story';
+
+    var inner=document.createElement('div');inner.className='wow-inner';
+
+    var badge=document.createElement('div');badge.className='wow-badge';badge.textContent='WOW!';
+
+    var scrib=document.createElement('div');scrib.className='wow-scribbles';
+    var fills=[92,78,85,65,88,55,72,80];
+    for(var ln=0;ln<8;ln++){
+      var line=document.createElement('div');line.className='wow-line';
+      line.style.setProperty('--fill',fills[ln%fills.length]+'%');
+      if(ln===3)line.style.setProperty('--fill','40%');
+      scrib.appendChild(line);
+    }
+
+    var dept=document.createElement('div');dept.className='wow-author';dept.textContent=w.dept;
+    var hint=document.createElement('div');hint.className='wow-click-hint';hint.textContent='tap to read ✨';
+
+    inner.appendChild(badge);inner.appendChild(scrib);inner.appendChild(dept);inner.appendChild(hint);
+    card.appendChild(inner);
+    area.appendChild(card);
+  });
+
+  // set area height
+  var maxY=WOW_STORIES.length>0?clamp(150,area.offsetWidth*.15,200)*1.5+80:360;
+  area.style.minHeight=maxY+'px';
+}
+
+// ── OPEN / CLOSE WOW ──────────────────────────────────────────────────────────
+function openWow(idx){
+  var w=WOW_STORIES[idx];
+  currentWow=idx;
+  document.getElementById('modal-author').textContent='— '+w.dept+(w.name?'  ·  '+w.name:'');
+  var body=document.getElementById('modal-body');
+  var qs=[
+    {label:'What happened?',                         sub:'(Be specific: who, what, when, where)',                                                               ans:w.happened},
+    {label:'What did you do?',                          sub:'(Your specific action — not your team\'s, yours)',                                               ans:w.did},
+    {label:'What was the impact?',                       sub:'(How did this contribute to your department\'s or the City\'s excellence?)',                    ans:w.impact},
+    {label:'What does this say about your mission?',     sub:'(In your own words — not the official mission statement. What does it mean to YOU?)',            ans:w.mission}
+  ];
+  body.innerHTML='';
+  qs.forEach(function(q,i){
+    var block=document.createElement('div');block.className='wow-q';
+    var lbl=document.createElement('div');lbl.className='wow-q-label';lbl.setAttribute('data-n',i+1);lbl.textContent=q.label;
+    if(q.sub){var s=document.createElement('span');s.style.cssText='font-family:"Caveat",cursive;font-size:13px;color:rgba(13,29,65,.4);font-weight:400;margin-left:8px;';s.textContent=q.sub;lbl.appendChild(s);}
+    var ans=document.createElement('div');ans.className='wow-q-answer';ans.textContent=q.ans;
+    block.appendChild(lbl);block.appendChild(ans);
+    if(i<3){var div=document.createElement('div');div.className='modal-divider';body.appendChild(block);body.appendChild(div);}
+    else body.appendChild(block);
+  });
+  document.getElementById('wow-overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeWow(){
+  document.getElementById('wow-overlay').classList.remove('show');
+  document.body.style.overflow='';
+  currentWow=null;
+}
+document.getElementById('wow-overlay').addEventListener('click',function(e){
+  if(e.target===this)closeWow();
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeWow();});
+
+function printWow(){window.print();}
+
+// ── DRAG ─────────────────────────────────────────────────────────────────────
+function makeDraggable(el2){
+  var isDragging=false,ox=0,oy=0,sx=0,sy=0;
+  function getPos(e){return e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};}
+  function start(e){
+    isDragging=true;var p=getPos(e);
+    var rect=el2.getBoundingClientRect();
+    var pr=el2.parentElement.getBoundingClientRect();
+    sx=rect.left-pr.left;sy=rect.top-pr.top;
+    ox=p.x-rect.left;oy=p.y-rect.top;
+    el2.classList.add('dragging');el2.style.zIndex=200;
+    e.preventDefault();
+  }
+  function move(e){
+    if(!isDragging)return;
+    var p=getPos(e);
+    var pr=el2.parentElement.getBoundingClientRect();
+    var nx=p.x-pr.left-ox;
+    var ny=p.y-pr.top-oy;
+    // constrain to parent
+    var pw=pr.width-el2.offsetWidth;
+    var ph=el2.parentElement.scrollHeight-el2.offsetHeight;
+    nx=Math.max(-10,Math.min(pw+10,nx));
+    ny=Math.max(-10,Math.min(ph+10,ny));
+    el2.style.left=nx+'px';el2.style.top=ny+'px';
+    e.preventDefault();
+  }
+  function end(){
+    if(!isDragging)return;
+    isDragging=false;el2.classList.remove('dragging');el2.style.zIndex=10;
+  }
+  el2.addEventListener('mousedown',start);
+  document.addEventListener('mousemove',move);
+  document.addEventListener('mouseup',end);
+  el2.addEventListener('touchstart',start,{passive:false});
+  document.addEventListener('touchmove',move,{passive:false});
+  document.addEventListener('touchend',end);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function clamp(min,val,max){return Math.min(max,Math.max(min,val));}
+function adjustColor(hex,amt){
+  var r=parseInt(hex.slice(1,3),16);var g=parseInt(hex.slice(3,5),16);var b=parseInt(hex.slice(5,7),16);
+  r=Math.max(0,Math.min(255,r+amt));g=Math.max(0,Math.min(255,g+amt));b=Math.max(0,Math.min(255,b+amt));
+  return '#'+[r,g,b].map(function(v){return v.toString(16).padStart(2,'0');}).join('');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',function(){
+  // wait a tick so layout is ready
+  setTimeout(function(){buildStickies();buildWows();},80);
+});
+function openPrintTemplate(){
+  document.getElementById('print-template').classList.add('show');
+  document.body.style.overflow='hidden';
+  window.scrollTo(0,0);
+}
+function closePrintTemplate(){
+  document.getElementById('print-template').classList.remove('show');
+  document.body.style.overflow='';
+}
+
+window.addEventListener('resize',function(){
+  // re-layout on resize — simple: just rebuild
+  document.getElementById('sticky-area').innerHTML='';
+  document.getElementById('wow-area').innerHTML='';
+  setTimeout(function(){buildStickies();buildWows();},50);
+});
+</script>
+</body>
+</html>
